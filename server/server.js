@@ -2,13 +2,19 @@
 const fastify = require("fastify")({ logger: true });
 
 fastify.register(require("@fastify/cors"));
-// fastify.register(require("@fastify/multipart"));
 
 fastify.addContentTypeParser(
   ["application/x-www-form-urlencoded", "multipart/form-data"],
   { parseAs: "string" },
   fastify.defaultTextParser
 );
+
+fastify.removeContentTypeParser([
+  "application/x-www-form-urlencoded",
+  "multipart/form-data",
+]);
+
+fastify.register(require("@fastify/multipart"));
 
 // Declare a route
 fastify.get("/", async (request, reply) => {
